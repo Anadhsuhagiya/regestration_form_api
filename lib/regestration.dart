@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:getwidget/getwidget.dart';
 
 class regestration extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     A a = Get.put(A());
@@ -24,171 +23,170 @@ class regestration extends StatelessWidget {
         ),
         body: ListView(
           children: [
-
             InkWell(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return SimpleDialog(
-                      title: Text("Select Image "),
-                      children: [
-                        ListTile(
-                          title: Text("Camera"),
-                          onTap: ()  {
-                            Navigator.pop(context);
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SimpleDialog(
+                        title: Text("Select Image "),
+                        children: [
+                          ListTile(
+                            title: Text("Camera"),
+                            onTap: () {
+                              Navigator.pop(context);
 
-                            a.Camera();
-                          },
-                        ),
-                        ListTile(
-                          title: Text("Gallary"),
-                          onTap: ()  {
-                            Navigator.pop(context);
+                              a.Camera();
+                            },
+                          ),
+                          ListTile(
+                            title: Text("Gallary"),
+                            onTap: () {
+                              Navigator.pop(context);
 
-                            a.Gallary();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.all(10),
-                height: 100,
-                width: 100,
-                color: Colors.black,
-                alignment: Alignment.center,
-                child: a.imagePath.isNotEmpty
-                    ? Image.file(
-                  File(a.imagePath.value),
-                  height: 100,
-                  width: 100,
-                  alignment: Alignment.center,
-                )
-                    : Image.network(
-                  'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png',height: 100,width: 100,fit: BoxFit.fill,),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                onChanged: (value) {
-                  print(value);
-                  a.nameError(value);
+                              a.Gallary();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
-                controller: a.name,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xff105900), width: 3)),
-                    border: OutlineInputBorder(),
-                    hintText: "Enter Name",
-                    labelText: "Name",
-                    labelStyle: TextStyle(color: Color(0xff105900)),
-                    errorText:
-                        a.nameerror.value ? "Please Enter Valid Name" : null,
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: Color(0xff105900),
-                    )),
-              ),
-            ),
+                child: Obx(
+                  () => Container(
+                    margin: EdgeInsets.only(left: 145,right: 145,top: 10,bottom: 10),
+                    height: 100,
+                    width: 100,
+                    decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),color: Colors.transparent,image: DecorationImage(image: a.imagePath.isNotEmpty
+                        ? FileImage(
+                      File(a.imagePath.value),) as ImageProvider
+                        : AssetImage(
+                      'image/Untitled.png',
+                    ),fit: BoxFit.fill)),
+                  )
+                )),
             Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                onChanged: (value) {
-                  print(value);
-                  a.emailError(value);
-                },
-                controller: a.email,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xff105900), width: 3)),
-                    border: OutlineInputBorder(),
-                    hintText: "Enter Email Address",
-                    labelText: "Email",
-                    labelStyle: TextStyle(color: Color(0xff105900)),
-                    errorText: a.emailerror.value ? a.emailmsg.value : null,
-                    prefixIcon: Icon(
-                      Icons.email_rounded,
-                      color: Color(0xff105900),
-                    )),
-              ),
-            ),
+                padding: const EdgeInsets.all(10.0),
+                child: Obx(
+                  () => TextField(
+                    onChanged: (value) {
+                      print(value);
+                      a.nameError(value);
+                    },
+                    controller: a.name,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xff105900), width: 3)),
+                        border: OutlineInputBorder(),
+                        hintText: "Enter Name",
+                        labelText: "Name",
+                        labelStyle: TextStyle(color: Color(0xff105900)),
+                        errorText: a.nameerror.value
+                            ? "Please Enter Valid Name"
+                            : null,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Color(0xff105900),
+                        )),
+                  ),
+                )),
             Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                onChanged: (value) {
-                  a.contactError(value);
-                },
-                controller: a.contact,
-                keyboardType: TextInputType.phone,
-                maxLength: 10,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff105900))),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xff105900), width: 3)),
-                    counter: Offstage(),
-                    suffixText:
-                        '${a.textLength.toString()}/${a.maxLength.toString()}',
-                    hintText: "Enter Your Contact",
-                    labelText: "Contact",
-                    labelStyle: TextStyle(color: Color(0xff105900)),
-                    errorText: a.contacterror.value ? a.contactmsg.value : null,
-                    prefixIcon: Icon(
-                      Icons.phone,
-                      color: Color(0xff105900),
-                    )),
-              ),
-            ),
+                padding: const EdgeInsets.all(10.0),
+                child: Obx(
+                  () => TextField(
+                    onChanged: (value) {
+                      print(value);
+                      a.emailError(value);
+                    },
+                    controller: a.email,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xff105900), width: 3)),
+                        border: OutlineInputBorder(),
+                        hintText: "Enter Email Address",
+                        labelText: "Email",
+                        labelStyle: TextStyle(color: Color(0xff105900)),
+                        errorText: a.emailerror.value ? a.emailmsg.value : null,
+                        prefixIcon: Icon(
+                          Icons.email_rounded,
+                          color: Color(0xff105900),
+                        )),
+                  ),
+                )),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 10, right: 10, bottom: 10, top: 3),
-              child: TextField(
-                onChanged: (value) {
-                  print(value);
-                  a.passError(value);
-                },
-                controller: a.Password,
-                obscureText: a.hidepass.value,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xff105900), width: 3)),
-                    border: OutlineInputBorder(),
-                    hintText: "Enter Your Password",
-                    labelText: "Password",
-                    labelStyle: TextStyle(color: Color(0xff105900)),
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          a.hidePass();
-                        },
-                        icon: a.hidepass.value
-                            ? Icon(
-                                Icons.visibility,
-                                color: Color(0xff105900),
-                              )
-                            : Icon(
-                                Icons.visibility_off,
-                                color: Color(0xff676767),
-                              )),
-                    errorText: a.passerror.value ? a.passmsg.value : null,
-                    prefixIcon: Icon(
-                      Icons.lock,
-                      color: Color(0xff105900),
-                    )),
-              ),
-            ),
-
+                padding: const EdgeInsets.all(10.0),
+                child: Obx(
+                  () => TextField(
+                    onChanged: (value) {
+                      a.contactError(value);
+                    },
+                    controller: a.contact,
+                    keyboardType: TextInputType.phone,
+                    maxLength: 10,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xff105900))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xff105900), width: 3)),
+                        counter: Offstage(),
+                        suffixText:
+                            '${a.textLength.toString()}/${a.maxLength.toString()}',
+                        hintText: "Enter Your Contact",
+                        labelText: "Contact",
+                        labelStyle: TextStyle(color: Color(0xff105900)),
+                        errorText:
+                            a.contacterror.value ? a.contactmsg.value : null,
+                        prefixIcon: Icon(
+                          Icons.phone,
+                          color: Color(0xff105900),
+                        )),
+                  ),
+                )),
+            Padding(
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, bottom: 10, top: 3),
+                child: Obx(
+                  () => TextField(
+                    onChanged: (value) {
+                      print(value);
+                      a.passError(value);
+                    },
+                    controller: a.Password,
+                    obscureText: a.hidepass.value,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xff105900), width: 3)),
+                        border: OutlineInputBorder(),
+                        hintText: "Enter Your Password",
+                        labelText: "Password",
+                        labelStyle: TextStyle(color: Color(0xff105900)),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              a.hidePass();
+                            },
+                            icon: a.hidepass.value
+                                ? Icon(
+                                    Icons.visibility,
+                                    color: Color(0xff105900),
+                                  )
+                                : Icon(
+                                    Icons.visibility_off,
+                                    color: Color(0xff676767),
+                                  )),
+                        errorText: a.passerror.value ? a.passmsg.value : null,
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: Color(0xff105900),
+                        )),
+                  ),
+                )),
             InkWell(
               onTap: () {
                 a.logics();
@@ -223,7 +221,6 @@ class regestration extends StatelessWidget {
 }
 
 class A extends GetxController {
-
   final ImagePicker _picker = ImagePicker();
   RxString imagePath = "".obs;
 
@@ -320,8 +317,7 @@ class A extends GetxController {
   }
 
   Future<void> Camera() async {
-    final XFile? photo = await _picker.pickImage(
-        source: ImageSource.camera);
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
 
     if (photo != null) {
       imagePath.value = photo.path;
@@ -330,8 +326,7 @@ class A extends GetxController {
   }
 
   Future<void> Gallary() async {
-    final XFile? photo = await _picker.pickImage(
-        source: ImageSource.gallery);
+    final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
 
     if (photo != null) {
       imagePath.value = photo.path;
