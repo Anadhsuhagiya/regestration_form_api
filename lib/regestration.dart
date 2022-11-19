@@ -1,23 +1,77 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:getwidget/getwidget.dart';
 
 class regestration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     A a = Get.put(A());
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Regestration",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 19),),
+          title: Text(
+            "Regestration",
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 19),
+          ),
           backgroundColor: Color(0xff105900),
         ),
-
         body: ListView(
           children: [
+
+            InkWell(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SimpleDialog(
+                      title: Text("Select Image "),
+                      children: [
+                        ListTile(
+                          title: Text("Camera"),
+                          onTap: ()  {
+                            Navigator.pop(context);
+
+                            a.Camera();
+                          },
+                        ),
+                        ListTile(
+                          title: Text("Gallary"),
+                          onTap: ()  {
+                            Navigator.pop(context);
+
+                            a.Gallary();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.all(10),
+                height: 100,
+                width: 100,
+                color: Colors.black,
+                alignment: Alignment.center,
+                child: a.imagePath.isNotEmpty
+                    ? Image.file(
+                  File(a.imagePath.value),
+                  height: 100,
+                  width: 100,
+                  alignment: Alignment.center,
+                )
+                    : Image.network(
+                  'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png',height: 100,width: 100,fit: BoxFit.fill,),
+              ),
+            ),
+
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: TextField(
@@ -30,12 +84,13 @@ class regestration extends StatelessWidget {
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Color(0xff105900), width: 3)),
+                            BorderSide(color: Color(0xff105900), width: 3)),
                     border: OutlineInputBorder(),
                     hintText: "Enter Name",
                     labelText: "Name",
                     labelStyle: TextStyle(color: Color(0xff105900)),
-                    errorText: a.nameerror.value ? "Please Enter Valid Name" : null,
+                    errorText:
+                        a.nameerror.value ? "Please Enter Valid Name" : null,
                     prefixIcon: Icon(
                       Icons.person,
                       color: Color(0xff105900),
@@ -54,7 +109,7 @@ class regestration extends StatelessWidget {
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Color(0xff105900), width: 3)),
+                            BorderSide(color: Color(0xff105900), width: 3)),
                     border: OutlineInputBorder(),
                     hintText: "Enter Email Address",
                     labelText: "Email",
@@ -70,7 +125,7 @@ class regestration extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: TextField(
                 onChanged: (value) {
-                    a.contactError(value);
+                  a.contactError(value);
                 },
                 controller: a.contact,
                 keyboardType: TextInputType.phone,
@@ -80,10 +135,10 @@ class regestration extends StatelessWidget {
                         borderSide: BorderSide(color: Color(0xff105900))),
                     focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Color(0xff105900), width: 3)),
+                            BorderSide(color: Color(0xff105900), width: 3)),
                     counter: Offstage(),
                     suffixText:
-                    '${a.textLength.toString()}/${a.maxLength.toString()}',
+                        '${a.textLength.toString()}/${a.maxLength.toString()}',
                     hintText: "Enter Your Contact",
                     labelText: "Contact",
                     labelStyle: TextStyle(color: Color(0xff105900)),
@@ -95,8 +150,8 @@ class regestration extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:
-              const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 3),
+              padding: const EdgeInsets.only(
+                  left: 10, right: 10, bottom: 10, top: 3),
               child: TextField(
                 onChanged: (value) {
                   print(value);
@@ -108,26 +163,24 @@ class regestration extends StatelessWidget {
                 decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Color(0xff105900), width: 3)),
+                            BorderSide(color: Color(0xff105900), width: 3)),
                     border: OutlineInputBorder(),
                     hintText: "Enter Your Password",
                     labelText: "Password",
                     labelStyle: TextStyle(color: Color(0xff105900)),
                     suffixIcon: IconButton(
                         onPressed: () {
-
                           a.hidePass();
-
                         },
                         icon: a.hidepass.value
                             ? Icon(
-                          Icons.visibility,
-                          color: Color(0xff105900),
-                        )
+                                Icons.visibility,
+                                color: Color(0xff105900),
+                              )
                             : Icon(
-                          Icons.visibility_off,
-                          color: Color(0xff676767),
-                        )),
+                                Icons.visibility_off,
+                                color: Color(0xff676767),
+                              )),
                     errorText: a.passerror.value ? a.passmsg.value : null,
                     prefixIcon: Icon(
                       Icons.lock,
@@ -169,14 +222,15 @@ class regestration extends StatelessWidget {
   }
 }
 
+class A extends GetxController {
 
-class A extends GetxController{
+  final ImagePicker _picker = ImagePicker();
+  RxString imagePath = "".obs;
 
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController Password = TextEditingController();
   TextEditingController contact = TextEditingController();
-
 
   RxBool nameerror = false.obs;
   RxBool namevalid = false.obs;
@@ -191,7 +245,6 @@ class A extends GetxController{
   RxString contactmsg = "".obs;
   RxString emailmsg = "".obs;
   RxString passmsg = "".obs;
-
 
   void nameError(String value) {
     if (nameerror.value) {
@@ -237,11 +290,11 @@ class A extends GetxController{
     String pass = Password.text;
 
     bool emailValid = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(Email);
-    bool passValid = RegExp(
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-        .hasMatch(pass);
+    bool passValid =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+            .hasMatch(pass);
 
     if (Name.isEmpty) {
       nameerror.value = true;
@@ -266,4 +319,23 @@ class A extends GetxController{
     }
   }
 
+  Future<void> Camera() async {
+    final XFile? photo = await _picker.pickImage(
+        source: ImageSource.camera);
+
+    if (photo != null) {
+      imagePath.value = photo.path;
+    }
+    print(imagePath);
+  }
+
+  Future<void> Gallary() async {
+    final XFile? photo = await _picker.pickImage(
+        source: ImageSource.gallery);
+
+    if (photo != null) {
+      imagePath.value = photo.path;
+    }
+    print(photo!.path);
+  }
 }
