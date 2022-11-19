@@ -19,7 +19,7 @@ class regestration extends StatelessWidget {
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 19),
           ),
-          backgroundColor: Color(0xff105900),
+          backgroundColor: Color(0xff040065),
         ),
         body: ListView(
           children: [
@@ -61,7 +61,7 @@ class regestration extends StatelessWidget {
                         ? FileImage(
                       File(a.imagePath.value),) as ImageProvider
                         : AssetImage(
-                      'image/Untitled.png',
+                      'image/image-removebg-preview (1).png',
                     ),fit: BoxFit.fill)),
                   )
                 )),
@@ -78,17 +78,17 @@ class regestration extends StatelessWidget {
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Color(0xff105900), width: 3)),
+                                BorderSide(color: Color(0xff040065), width: 3)),
                         border: OutlineInputBorder(),
                         hintText: "Enter Name",
                         labelText: "Name",
-                        labelStyle: TextStyle(color: Color(0xff105900)),
+                        labelStyle: TextStyle(color: Color(0xff040065)),
                         errorText: a.nameerror.value
                             ? "Please Enter Valid Name"
                             : null,
                         prefixIcon: Icon(
                           Icons.person,
-                          color: Color(0xff105900),
+                          color: Color(0xff040065),
                         )),
                   ),
                 )),
@@ -105,15 +105,15 @@ class regestration extends StatelessWidget {
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Color(0xff105900), width: 3)),
+                                BorderSide(color: Color(0xff040065), width: 3)),
                         border: OutlineInputBorder(),
                         hintText: "Enter Email Address",
                         labelText: "Email",
-                        labelStyle: TextStyle(color: Color(0xff105900)),
+                        labelStyle: TextStyle(color: Color(0xff040065)),
                         errorText: a.emailerror.value ? a.emailmsg.value : null,
                         prefixIcon: Icon(
                           Icons.email_rounded,
-                          color: Color(0xff105900),
+                          color: Color(0xff040065),
                         )),
                   ),
                 )),
@@ -129,21 +129,21 @@ class regestration extends StatelessWidget {
                     maxLength: 10,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff105900))),
+                            borderSide: BorderSide(color: Color(0xff040065))),
                         focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Color(0xff105900), width: 3)),
+                                BorderSide(color: Color(0xff040065), width: 3)),
                         counter: Offstage(),
                         suffixText:
                             '${a.textLength.toString()}/${a.maxLength.toString()}',
                         hintText: "Enter Your Contact",
                         labelText: "Contact",
-                        labelStyle: TextStyle(color: Color(0xff105900)),
+                        labelStyle: TextStyle(color: Color(0xff040065)),
                         errorText:
                             a.contacterror.value ? a.contactmsg.value : null,
                         prefixIcon: Icon(
                           Icons.phone,
-                          color: Color(0xff105900),
+                          color: Color(0xff040065),
                         )),
                   ),
                 )),
@@ -162,11 +162,11 @@ class regestration extends StatelessWidget {
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Color(0xff105900), width: 3)),
+                                BorderSide(color: Color(0xff040065), width: 3)),
                         border: OutlineInputBorder(),
                         hintText: "Enter Your Password",
                         labelText: "Password",
-                        labelStyle: TextStyle(color: Color(0xff105900)),
+                        labelStyle: TextStyle(color: Color(0xff040065)),
                         suffixIcon: IconButton(
                             onPressed: () {
                               a.hidePass();
@@ -174,7 +174,7 @@ class regestration extends StatelessWidget {
                             icon: a.hidepass.value
                                 ? Icon(
                                     Icons.visibility,
-                                    color: Color(0xff105900),
+                                    color: Color(0xff040065),
                                   )
                                 : Icon(
                                     Icons.visibility_off,
@@ -183,7 +183,7 @@ class regestration extends StatelessWidget {
                         errorText: a.passerror.value ? a.passmsg.value : null,
                         prefixIcon: Icon(
                           Icons.lock,
-                          color: Color(0xff105900),
+                          color: Color(0xff040065),
                         )),
                   ),
                 )),
@@ -197,7 +197,7 @@ class regestration extends StatelessWidget {
                 margin: EdgeInsets.only(left: 120, right: 120, top: 10),
                 alignment: Alignment.center,
                 decoration: ShapeDecoration(
-                    color: Color(0xff105900),
+                    color: Color(0xff040065),
                     shadows: [
                       BoxShadow(
                           blurRadius: 7,
