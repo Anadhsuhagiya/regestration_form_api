@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:getwidget/getwidget.dart';
 
+import 'Login.dart';
+
 class regestration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -212,6 +214,16 @@ class regestration extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
+            ),
+            
+            Center(
+              child: SizedBox(
+                height: 100,
+                width: double.infinity,
+                child: TextButton(onPressed: () {
+                    Get.to(Login());
+                }, child: Text("Already Login ?",style: TextStyle(fontSize: 20),)),
+              )
             ),
           ],
         ),
