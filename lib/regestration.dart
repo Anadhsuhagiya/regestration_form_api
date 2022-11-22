@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:http/http.dart' as http;
 
 import 'Login.dart';
 
 class regestration extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     A a = Get.put(A());
@@ -23,209 +26,322 @@ class regestration extends StatelessWidget {
           ),
           backgroundColor: Color(0xff040065),
         ),
-        body: ListView(
-          children: [
-            InkWell(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SimpleDialog(
+                          title: Text("Select Image "),
+                          children: [
+                            ListTile(
+                              title: Text("Camera"),
+                              onTap: () {
+                                Navigator.pop(context);
+
+                                a.Camera();
+                              },
+                            ),
+                            ListTile(
+                              title: Text("Gallary"),
+                              onTap: () {
+                                Navigator.pop(context);
+
+                                a.Gallary();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Obx(() => Container(
+                        margin: EdgeInsets.only(
+                            left: 145, right: 145, top: 10, bottom: 10),
+                        height: 100,
+                        width: 100,
+                        decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            color: Colors.transparent,
+                            image: DecorationImage(
+                                image: a.imagePath.isNotEmpty
+                                    ? FileImage(
+                                        File(a.imagePath.value),
+                                      ) as ImageProvider
+                                    : AssetImage(
+                                        'image/person-man.webp',
+                                      ),
+                                fit: BoxFit.fill)),
+                      ))),
+              Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Obx(
+                    () => TextField(
+                      onChanged: (value) {
+                        print(value);
+                        a.nameError(value);
+                      },
+                      controller: a.name,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xff040065), width: 3)),
+                          border: OutlineInputBorder(),
+                          hintText: "Enter Name",
+                          labelText: "Name",
+                          labelStyle: TextStyle(color: Color(0xff040065)),
+                          errorText: a.nameerror.value
+                              ? "Please Enter Valid Name"
+                              : null,
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Color(0xff040065),
+                          )),
+                    ),
+                  )),
+              Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Obx(
+                    () => TextField(
+                      onChanged: (value) {
+                        print(value);
+                        a.emailError(value);
+                      },
+                      controller: a.email,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xff040065), width: 3)),
+                          border: OutlineInputBorder(),
+                          hintText: "Enter Email Address",
+                          labelText: "Email",
+                          labelStyle: TextStyle(color: Color(0xff040065)),
+                          errorText:
+                              a.emailerror.value ? a.emailmsg.value : null,
+                          prefixIcon: Icon(
+                            Icons.email_rounded,
+                            color: Color(0xff040065),
+                          )),
+                    ),
+                  )),
+              Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Obx(
+                    () => TextField(
+                      onChanged: (value) {
+                        a.contactError(value);
+                      },
+                      controller: a.contact,
+                      keyboardType: TextInputType.phone,
+                      maxLength: 10,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xff040065))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xff040065), width: 3)),
+                          counter: Offstage(),
+                          suffixText:
+                              '${a.textLength.toString()}/${a.maxLength.toString()}',
+                          hintText: "Enter Your Contact",
+                          labelText: "Contact",
+                          labelStyle: TextStyle(color: Color(0xff040065)),
+                          errorText:
+                              a.contacterror.value ? a.contactmsg.value : null,
+                          prefixIcon: Icon(
+                            Icons.phone,
+                            color: Color(0xff040065),
+                          )),
+                    ),
+                  )),
+              Padding(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, bottom: 10, top: 3),
+                  child: Obx(
+                    () => TextField(
+                      onChanged: (value) {
+                        print(value);
+                        a.passError(value);
+                      },
+                      controller: a.Password,
+                      obscureText: a.hidepass.value,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xff040065), width: 3)),
+                          border: OutlineInputBorder(),
+                          hintText: "Enter Your Password",
+                          labelText: "Password",
+                          labelStyle: TextStyle(color: Color(0xff040065)),
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                a.hidePass();
+                              },
+                              icon: a.hidepass.value
+                                  ? Icon(
+                                      Icons.visibility,
+                                      color: Color(0xff040065),
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                      color: Color(0xff676767),
+                                    )),
+                          errorText: a.passerror.value ? a.passmsg.value : null,
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Color(0xff040065),
+                          )),
+                    ),
+                  )),
+              InkWell(
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SimpleDialog(
-                        title: Text("Select Image "),
-                        children: [
-                          ListTile(
-                            title: Text("Camera"),
-                            onTap: () {
-                              Navigator.pop(context);
-
-                              a.Camera();
-                            },
+                  showDialog(context: context, builder: (context) {
+                    return SimpleDialog(
+                      children: [
+                        Container(
+                          height: 60,
+                          child: ListTile(
+                            leading: Container(
+                              height: 45,
+                              width: 45,
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator(),
+                            ),
+                            title: Text(
+                              "Please Wait ...",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
-                          ListTile(
-                            title: Text("Gallary"),
-                            onTap: () {
-                              Navigator.pop(context);
-
-                              a.Gallary();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                        )
+                      ],
+                    );
+                  },);
+                  a.logics(context);
                 },
-                child: Obx(
-                  () => Container(
-                    margin: EdgeInsets.only(left: 145,right: 145,top: 10,bottom: 10),
-                    height: 100,
-                    width: 100,
-                    decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),color: Colors.transparent,image: DecorationImage(image: a.imagePath.isNotEmpty
-                        ? FileImage(
-                      File(a.imagePath.value),) as ImageProvider
-                        : AssetImage(
-                      'image/image-removebg-preview (1).png',
-                    ),fit: BoxFit.fill)),
-                  )
-                )),
-            Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Obx(
-                  () => TextField(
-                    onChanged: (value) {
-                      print(value);
-                      a.nameError(value);
-                    },
-                    controller: a.name,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff040065), width: 3)),
-                        border: OutlineInputBorder(),
-                        hintText: "Enter Name",
-                        labelText: "Name",
-                        labelStyle: TextStyle(color: Color(0xff040065)),
-                        errorText: a.nameerror.value
-                            ? "Please Enter Valid Name"
-                            : null,
-                        prefixIcon: Icon(
-                          Icons.person,
-                          color: Color(0xff040065),
-                        )),
+                child: Container(
+                  height: 50,
+                  width: 120,
+                  margin: EdgeInsets.all(10),
+                  alignment: Alignment.center,
+                  decoration: ShapeDecoration(
+                      color: Color(0xff040065),
+                      shadows: [
+                        BoxShadow(
+                            blurRadius: 7,
+                            spreadRadius: 1,
+                            offset: Offset(0, 3),
+                            color: Colors.black.withOpacity(0.4))
+                      ],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                  child: Text(
+                    "SignUp",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
-                )),
-            Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Obx(
-                  () => TextField(
-                    onChanged: (value) {
-                      print(value);
-                      a.emailError(value);
-                    },
-                    controller: a.email,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff040065), width: 3)),
-                        border: OutlineInputBorder(),
-                        hintText: "Enter Email Address",
-                        labelText: "Email",
-                        labelStyle: TextStyle(color: Color(0xff040065)),
-                        errorText: a.emailerror.value ? a.emailmsg.value : null,
-                        prefixIcon: Icon(
-                          Icons.email_rounded,
-                          color: Color(0xff040065),
-                        )),
-                  ),
-                )),
-            Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Obx(
-                  () => TextField(
-                    onChanged: (value) {
-                      a.contactError(value);
-                    },
-                    controller: a.contact,
-                    keyboardType: TextInputType.phone,
-                    maxLength: 10,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff040065))),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff040065), width: 3)),
-                        counter: Offstage(),
-                        suffixText:
-                            '${a.textLength.toString()}/${a.maxLength.toString()}',
-                        hintText: "Enter Your Contact",
-                        labelText: "Contact",
-                        labelStyle: TextStyle(color: Color(0xff040065)),
-                        errorText:
-                            a.contacterror.value ? a.contactmsg.value : null,
-                        prefixIcon: Icon(
-                          Icons.phone,
-                          color: Color(0xff040065),
-                        )),
-                  ),
-                )),
-            Padding(
-                padding: const EdgeInsets.only(
-                    left: 10, right: 10, bottom: 10, top: 3),
-                child: Obx(
-                  () => TextField(
-                    onChanged: (value) {
-                      print(value);
-                      a.passError(value);
-                    },
-                    controller: a.Password,
-                    obscureText: a.hidepass.value,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff040065), width: 3)),
-                        border: OutlineInputBorder(),
-                        hintText: "Enter Your Password",
-                        labelText: "Password",
-                        labelStyle: TextStyle(color: Color(0xff040065)),
-                        suffixIcon: IconButton(
-                            onPressed: () {
-                              a.hidePass();
-                            },
-                            icon: a.hidepass.value
-                                ? Icon(
-                                    Icons.visibility,
-                                    color: Color(0xff040065),
-                                  )
-                                : Icon(
-                                    Icons.visibility_off,
-                                    color: Color(0xff676767),
-                                  )),
-                        errorText: a.passerror.value ? a.passmsg.value : null,
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Color(0xff040065),
-                        )),
-                  ),
-                )),
-            InkWell(
-              onTap: () {
-                a.logics();
-              },
-              child: Container(
-                height: 50,
-                width: 50,
-                margin: EdgeInsets.only(left: 120, right: 120, top: 10),
-                alignment: Alignment.center,
-                decoration: ShapeDecoration(
-                    color: Color(0xff040065),
-                    shadows: [
-                      BoxShadow(
-                          blurRadius: 7,
-                          spreadRadius: 1,
-                          offset: Offset(0, 3),
-                          color: Colors.black.withOpacity(0.4))
-                    ],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
-                child: Text(
-                  "Register",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
-            ),
-            
-            Center(
-              child: SizedBox(
-                height: 100,
+              Center(
+                  child: TextButton(
+                      onPressed: () {
+                        Get.to(Login());
+                      },
+                      child: Text(
+                        "Already Login ?",
+                        style: TextStyle(fontSize: 20),
+                      ))),
+              Container(
+                height: 17,
                 width: double.infinity,
-                child: TextButton(onPressed: () {
-                    Get.to(Login());
-                }, child: Text("Already Login ?",style: TextStyle(fontSize: 20),)),
+                margin: EdgeInsets.only(bottom: 15, top: 10),
+                alignment: Alignment.center,
+                child: Text(
+                  "--------------- Or Signup with ---------------",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      margin: EdgeInsets.only(top: 20),
+                      alignment: Alignment.center,
+                      decoration: ShapeDecoration(
+                          color: Color(0xffffffff),
+                          shadows: [
+                            BoxShadow(
+                                blurRadius: 7,
+                                spreadRadius: 1,
+                                offset: Offset(0, 3),
+                                color: Colors.black.withOpacity(0.4))
+                          ],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: Image.asset('image/google.png'),
+                      padding: EdgeInsets.all(10),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      margin: EdgeInsets.only(top: 20),
+                      alignment: Alignment.center,
+                      decoration: ShapeDecoration(
+                          color: Color(0xffffffff),
+                          shadows: [
+                            BoxShadow(
+                                blurRadius: 7,
+                                spreadRadius: 1,
+                                offset: Offset(0, 3),
+                                color: Colors.black.withOpacity(0.4))
+                          ],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: Image.asset('image/facebook.png'),
+                      padding: EdgeInsets.all(10),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      margin: EdgeInsets.only(top: 20),
+                      alignment: Alignment.center,
+                      decoration: ShapeDecoration(
+                          color: Color(0xffffffff),
+                          shadows: [
+                            BoxShadow(
+                                blurRadius: 7,
+                                spreadRadius: 1,
+                                offset: Offset(0, 3),
+                                color: Colors.black.withOpacity(0.4))
+                          ],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: Image.asset('image/twitter.png'),
+                      padding: EdgeInsets.all(10),
+                    ),
+                  ),
+                ],
               )
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -292,11 +408,12 @@ class A extends GetxController {
     hidepass.value = !hidepass.value;
   }
 
-  void logics() {
+  Future<void> logics(BuildContext context) async {
     String Name = name.text;
     String Phone = contact.text;
     String Email = email.text;
     String pass = Password.text;
+    Map m = {'name': Name, 'phone': Phone, 'email': Email, 'pass': pass};
 
     bool emailValid = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -304,6 +421,8 @@ class A extends GetxController {
     bool passValid =
         RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
             .hasMatch(pass);
+
+    String link = "https://flutteranadh.000webhostapp.com/register.php";
 
     if (Name.isEmpty) {
       nameerror.value = true;
@@ -325,6 +444,17 @@ class A extends GetxController {
     } else if (!passValid) {
       passerror.value = true;
       passmsg.value = "Please Enter Valid Formatted password";
+    } else {
+      var url = Uri.parse(link);
+      var response = await http.post(url, body: m);
+
+      Navigator.pop(context);
+
+      print('Response status: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        print('Response body: ${response.body}');
+      }
     }
   }
 
