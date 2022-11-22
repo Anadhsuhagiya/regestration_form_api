@@ -87,6 +87,7 @@ class regestration extends StatelessWidget {
                       },
                       controller: a.name,
                       keyboardType: TextInputType.text,
+                      style: TextStyle(color: Color(0xff040065)),
                       decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -114,6 +115,7 @@ class regestration extends StatelessWidget {
                       },
                       controller: a.email,
                       keyboardType: TextInputType.text,
+                      style: TextStyle(color: Color(0xff040065)),
                       decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -139,6 +141,7 @@ class regestration extends StatelessWidget {
                       },
                       controller: a.contact,
                       keyboardType: TextInputType.phone,
+                      style: TextStyle(color: Color(0xff040065)),
                       maxLength: 10,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -171,6 +174,7 @@ class regestration extends StatelessWidget {
                       },
                       controller: a.Password,
                       obscureText: a.hidepass.value,
+                      style: TextStyle(color: Color(0xff040065)),
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
