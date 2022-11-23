@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -206,31 +207,8 @@ class regestration extends StatelessWidget {
                   )),
               InkWell(
                 onTap: () {
-                  showDialog(context: context, builder: (context) {
-                    return SimpleDialog(
-                      children: [
-                        Container(
-                          height: 60,
-                          child: ListTile(
-                            leading: Container(
-                              height: 45,
-                              width: 45,
-                              alignment: Alignment.center,
-                              child: CircularProgressIndicator(),
-                            ),
-                            title: Text(
-                              "Please Wait ...",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        )
-                      ],
-                    );
-                  },);
-                  a.logics(context);
+
+                      a.logics(context);
                 },
                 child: Container(
                   height: 50,
@@ -353,7 +331,7 @@ class regestration extends StatelessWidget {
 }
 
 class A extends GetxController {
-  final ImagePicker _picker = ImagePicker();
+  ImagePicker _picker = ImagePicker();
   RxString imagePath = "".obs;
 
   TextEditingController name = TextEditingController();
@@ -417,7 +395,7 @@ class A extends GetxController {
     String Phone = contact.text;
     String Email = email.text;
     String pass = Password.text;
-    Map m = {'name': Name, 'phone': Phone, 'email': Email, 'pass': pass};
+    // Map m = {'name': Name, 'phone': Phone, 'email': Email, 'pass': pass};
 
     bool emailValid = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -449,16 +427,49 @@ class A extends GetxController {
       passerror.value = true;
       passmsg.value = "Please Enter Valid Formatted password";
     } else {
-      var url = Uri.parse(link);
-      var response = await http.post(url, body: m);
 
-      Navigator.pop(context);
+      showDialog(context: context, builder: (context) {
+        return SimpleDialog(
+          children: [
+            Container(
+              height: 60,
+              child: ListTile(
+                leading: Container(
+                  height: 45,
+                  width: 45,
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(),
+                ),
+                title: Text(
+                  "Please Wait ...",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+          ],
+        );
+      },);
 
-      print('Response status: ${response.statusCode}');
 
-      if (response.statusCode == 200) {
-        print('Response body: ${response.body}');
-      }
+      var formData = FormData.fromMap({
+        'name': Name, 'phone': Phone, 'email': Email, 'pass': pass,
+        'file': await MultipartFile.fromFile('./text.txt', filename: 'upload.txt'),
+      });
+      var response = await Dio().post('/info', data: formData);
+      //http for small data send to php file
+      // var url = Uri.parse(link);
+      // var response = await http.post(url, body: m);
+      //
+      // Navigator.pop(context);
+      //
+      // print('Response status: ${response.statusCode}');
+      //
+      // if (response.statusCode == 200) {
+      //   print('Response body: ${response.body}');
+      // }
     }
   }
 
@@ -480,3 +491,5 @@ class A extends GetxController {
     print(photo!.path);
   }
 }
+
+

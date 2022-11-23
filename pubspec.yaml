@@ -41,6 +41,7 @@ dependencies:
   getwidget:
   lottie:
   http:
+  dio:
 
 dev_dependencies:
   flutter_test:
